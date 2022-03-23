@@ -66,7 +66,8 @@ class _MovieDetailState extends State<MovieDetail> {
           floatingActionButton: FloatingActionButton(
             heroTag: actualMovie!.id,
             onPressed: () {
-              print('add');
+              Navigator.pushNamed(context, 'review',
+                  arguments: {'action': 'add'});
             },
             backgroundColor: getColor('bubble-dark'),
             child: const Icon(Icons.add),
