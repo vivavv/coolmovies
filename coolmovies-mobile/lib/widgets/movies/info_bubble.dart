@@ -15,7 +15,7 @@ class InfoBubble extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
         margin: const EdgeInsets.only(bottom: 5, right: 5),
         decoration: BoxDecoration(
-            color: getColor('bubble'),
+            color: showIcon ? getColor('bubble') : getColor('bubble-dark'),
             borderRadius: const BorderRadius.all(Radius.circular(13))),
         child: Row(children: [
           showIcon

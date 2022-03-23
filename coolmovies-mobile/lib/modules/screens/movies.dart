@@ -1,11 +1,14 @@
 import 'package:coolmovies/modules/models/movie.dart';
 import 'package:coolmovies/utils/helpers/graphql_config.dart';
 import 'package:coolmovies/utils/helpers/theme.dart';
-import 'package:coolmovies/utils/services/all_movies.dart';
+import 'package:coolmovies/utils/services/graphql/queries/all_movies.dart';
+import 'package:coolmovies/utils/services/movie_service.dart';
 import 'package:coolmovies/widgets/movies/movie_item.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class MoviesPage extends StatefulWidget {
   const MoviesPage({Key? key}) : super(key: key);
@@ -53,11 +56,14 @@ class _MoviesPageState extends State<MoviesPage> {
                 child: ListView.separated(
                     itemBuilder: (context, i) => MovieItem(
                           key: Key(_movies[i].id),
-                          title: _movies[i].title,
-                          director: _movies[i].director.name,
-                          releaseDate: _movies[i].releaseDate,
-                          imgUrl: _movies[i].imgUrl,
-                          reviews: _movies[i].reviews,
+                          movie: _movies[i],
+                          onTap: (movie) {
+                            final movieService = Provider.of<MovieService>(
+                                context,
+                                listen: false);
+                            movieService.selectedMovie = movie;
+                            Navigator.pushNamed(context, 'movieDetail');
+                          },
                         ),
                     separatorBuilder: (_, i) => const Divider(),
                     itemCount: _movies.length))));
