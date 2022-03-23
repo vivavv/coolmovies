@@ -4,5 +4,5 @@ String getReviews(List<MovieReview>? reviews) {
   final result =
       reviews!.map((review) => review.rating).reduce((a, b) => a + b);
 
-  return (result / reviews.length).toString();
+  return (result / reviews.length).toStringAsFixed(1);
 }

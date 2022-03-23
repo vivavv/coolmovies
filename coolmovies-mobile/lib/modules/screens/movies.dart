@@ -27,6 +27,31 @@ class _MoviesPageState extends State<MoviesPage> {
     _getMovies();
   }
 
+  //Queries
+  void _getMovies() async {
+    final QueryOptions options = QueryOptions(document: gql(getAllMovies));
+
+    GraphQLConfig graphQLConfiguration = GraphQLConfig();
+    GraphQLClient _client = graphQLConfiguration.clientToQuery();
+
+    final QueryResult result = await _client.query(options);
+
+    if (result.hasException) {
+      throw (result.exception.toString());
+    } else {
+      // ignore: avoid_print
+      setState(() {
+        _movies =
+            moviesFromJson(json.encode(result.data!['allMovies']['nodes']));
+      });
+    }
+  }
+
+  Future<void> _pullRefresh() async {
+    _getMovies();
+    await Future.delayed(const Duration(milliseconds: 500));
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -67,31 +92,6 @@ class _MoviesPageState extends State<MoviesPage> {
                         ),
                     separatorBuilder: (_, i) => const Divider(),
                     itemCount: _movies.length))));
-  }
-
-  //Queries
-  void _getMovies() async {
-    final QueryOptions options = QueryOptions(document: gql(getAllMovies));
-
-    GraphQLConfig graphQLConfiguration = GraphQLConfig();
-    GraphQLClient _client = graphQLConfiguration.clientToQuery();
-
-    final QueryResult result = await _client.query(options);
-
-    if (result.hasException) {
-      throw (result.exception.toString());
-    } else {
-      // ignore: avoid_print
-      setState(() {
-        _movies =
-            moviesFromJson(json.encode(result.data!['allMovies']['nodes']));
-      });
-    }
-  }
-
-  Future<void> _pullRefresh() async {
-    _getMovies();
-    await Future.delayed(const Duration(milliseconds: 500));
   }
 
   @override

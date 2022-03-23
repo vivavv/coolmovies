@@ -11,9 +11,14 @@ const getAllMovies = r"""
         }
         movieReviewsByMovieId {
           nodes {
+            id
             body
             rating
             title
+            userByUserReviewerId {
+              name
+              id
+            }
           }
         }         
       }

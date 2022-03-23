@@ -45,13 +45,14 @@ class MovieItem extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                 child: Container(
-                    height: 160,
+                    height: 170,
                     color: getColor('background'),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          shortenString(title, 35),
+                          shortenString(title, 30),
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -62,7 +63,6 @@ class MovieItem extends StatelessWidget {
                             style: TextStyle(color: getColor('text'))),
                         const Padding(padding: EdgeInsets.only(bottom: 50)),
                         InfoBubble(info: getReviews(reviews), showIcon: true),
-                        const Padding(padding: EdgeInsets.only(bottom: 10)),
                         InfoBubble(
                             info: releaseDate.substring(0, 4), showIcon: false),
                       ],
