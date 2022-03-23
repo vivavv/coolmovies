@@ -1,5 +1,6 @@
 import 'package:coolmovies/modules/models/movie.dart';
 import 'package:coolmovies/utils/helpers/shorten_string.dart';
+import 'package:coolmovies/utils/helpers/theme.dart';
 import 'package:coolmovies/widgets/movies/info_bubble.dart';
 import 'package:flutter/material.dart';
 
@@ -29,14 +30,14 @@ class MovieItem extends StatelessWidget {
           child: SizedBox(
               child: Image.network(imgUrl, width: 125, fit: BoxFit.contain,
                   errorBuilder: (_, __, ___) {
-            return const Text('Poster not found',
+            return Text('Poster not found',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.purple, fontSize: 20));
+                style: TextStyle(color: getColor('text'), fontSize: 20));
           })),
         ),
         const Padding(padding: EdgeInsets.only(right: 5)),
         Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
             child: SizedBox(
                 height: 160,
                 child: Column(
@@ -44,11 +45,13 @@ class MovieItem extends StatelessWidget {
                   children: [
                     Text(
                       shortenString(title, 35),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: getColor('text')),
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 10)),
-                    Text(director),
+                    Text(director, style: TextStyle(color: getColor('text'))),
                     const Padding(padding: EdgeInsets.only(bottom: 50)),
                     InfoBubble(info: _getReviews(), showIcon: true),
                     const Padding(padding: EdgeInsets.only(bottom: 10)),

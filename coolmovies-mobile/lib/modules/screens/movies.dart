@@ -1,5 +1,6 @@
 import 'package:coolmovies/modules/models/movie.dart';
 import 'package:coolmovies/utils/helpers/graphql_config.dart';
+import 'package:coolmovies/utils/helpers/theme.dart';
 import 'package:coolmovies/utils/services/all_movies.dart';
 import 'package:coolmovies/widgets/movies/movie_item.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +31,22 @@ class _MoviesPageState extends State<MoviesPage> {
     return SafeArea(
         child: Scaffold(
             resizeToAvoidBottomInset: true,
+            backgroundColor: getColor('background'),
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(size.height * .08),
                 child: Container(
                   alignment: AlignmentDirectional.center,
                   padding: EdgeInsets.zero,
-                  color: Colors.purple,
+                  color: getColor('header'),
                   width: size.width * .8,
                   height: size.height * .175,
-                  child: const Text('soy header'),
+                  child: const Text(
+                    'CoolMovies',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.white),
+                  ),
                 )),
             body: RefreshIndicator(
                 onRefresh: _pullRefresh,

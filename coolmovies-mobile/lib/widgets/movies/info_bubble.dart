@@ -1,4 +1,5 @@
 import 'package:coolmovies/utils/helpers/shorten_string.dart';
+import 'package:coolmovies/utils/helpers/theme.dart';
 import 'package:flutter/material.dart';
 
 class InfoBubble extends StatelessWidget {
@@ -13,9 +14,9 @@ class InfoBubble extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
         margin: const EdgeInsets.only(bottom: 5, right: 5),
-        decoration: const BoxDecoration(
-            color: Colors.purple,
-            borderRadius: BorderRadius.all(Radius.circular(13))),
+        decoration: BoxDecoration(
+            color: getColor('bubble'),
+            borderRadius: const BorderRadius.all(Radius.circular(13))),
         child: Row(children: [
           showIcon
               ? const Padding(
