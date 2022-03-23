@@ -1,9 +1,14 @@
 import 'package:coolmovies/modules/models/movie.dart';
+import 'package:coolmovies/modules/models/user.dart';
+import 'package:coolmovies/utils/helpers/graphql_config.dart';
 import 'package:coolmovies/utils/helpers/theme.dart';
+import 'package:coolmovies/utils/services/graphql/queries/current_user.dart';
 import 'package:coolmovies/utils/services/movie_service.dart';
+import 'package:coolmovies/widgets/footer.dart';
 import 'package:coolmovies/widgets/movie_detail/movie_detail_info.dart';
 import 'package:coolmovies/widgets/movie_detail/movie_reviews.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetail extends StatefulWidget {
@@ -16,6 +21,7 @@ class MovieDetail extends StatefulWidget {
 class _MovieDetailState extends State<MovieDetail> {
   MovieService? movieService;
   Movie? actualMovie;
+  User _currentUser = User(id: '', name: '');
 
   @override
   void initState() {
@@ -24,6 +30,28 @@ class _MovieDetailState extends State<MovieDetail> {
     movieService = Provider.of<MovieService>(context, listen: false);
 
     actualMovie = movieService!.selectedMovie;
+
+    _getCurrentUser();
+  }
+
+  //Queries
+  void _getCurrentUser() async {
+    final QueryOptions options = QueryOptions(document: gql(getCurrentUser));
+
+    GraphQLConfig graphQLConfiguration = GraphQLConfig();
+    GraphQLClient _client = graphQLConfiguration.clientToQuery();
+
+    final QueryResult result = await _client.query(options);
+
+    if (result.hasException) {
+      throw (result.exception.toString());
+    } else {
+      final user = User.fromJson(result.data!['currentUser']);
+
+      setState(() {
+        _currentUser = user;
+      });
+    }
   }
 
   @override
@@ -63,6 +91,7 @@ class _MovieDetailState extends State<MovieDetail> {
             MovieDetailInfo(movie: actualMovie!, size: size),
             MovieReviews(movie: actualMovie!, size: size),
           ]),
+          bottomNavigationBar: Footer(username: _currentUser.name),
           floatingActionButton: FloatingActionButton(
             heroTag: actualMovie!.id,
             onPressed: () {

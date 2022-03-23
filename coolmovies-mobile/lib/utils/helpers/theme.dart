@@ -18,6 +18,7 @@ List<AppColor> appColors = <AppColor>[
   AppColor('bubble', const Color(0xFF3a364f)),
   AppColor('bubble-dark', const Color(0xFF0e0d13)),
   AppColor('item', const Color(0xFF45415e)),
+  AppColor('footer', const Color(0xFF2f2c40))
 ];
 
 Color getColor(String name) {

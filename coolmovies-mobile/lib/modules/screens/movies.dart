@@ -1,8 +1,11 @@
 import 'package:coolmovies/modules/models/movie.dart';
+import 'package:coolmovies/modules/models/user.dart';
 import 'package:coolmovies/utils/helpers/graphql_config.dart';
 import 'package:coolmovies/utils/helpers/theme.dart';
 import 'package:coolmovies/utils/services/graphql/queries/all_movies.dart';
+import 'package:coolmovies/utils/services/graphql/queries/current_user.dart';
 import 'package:coolmovies/utils/services/movie_service.dart';
+import 'package:coolmovies/widgets/footer.dart';
 import 'package:coolmovies/widgets/movies/movie_item.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -19,12 +22,14 @@ class MoviesPage extends StatefulWidget {
 
 class _MoviesPageState extends State<MoviesPage> {
   List<Movie> _movies = [];
+  User _currentUser = User(id: '', name: '');
 
   @override
   void initState() {
     super.initState();
 
     _getMovies();
+    _getCurrentUser();
   }
 
   //Queries
@@ -43,6 +48,25 @@ class _MoviesPageState extends State<MoviesPage> {
       setState(() {
         _movies =
             moviesFromJson(json.encode(result.data!['allMovies']['nodes']));
+      });
+    }
+  }
+
+  void _getCurrentUser() async {
+    final QueryOptions options = QueryOptions(document: gql(getCurrentUser));
+
+    GraphQLConfig graphQLConfiguration = GraphQLConfig();
+    GraphQLClient _client = graphQLConfiguration.clientToQuery();
+
+    final QueryResult result = await _client.query(options);
+
+    if (result.hasException) {
+      throw (result.exception.toString());
+    } else {
+      final user = User.fromJson(result.data!['currentUser']);
+
+      setState(() {
+        _currentUser = user;
       });
     }
   }
@@ -91,7 +115,8 @@ class _MoviesPageState extends State<MoviesPage> {
                           },
                         ),
                     separatorBuilder: (_, i) => const Divider(),
-                    itemCount: _movies.length))));
+                    itemCount: _movies.length)),
+            bottomNavigationBar: Footer(username: _currentUser.name)));
   }
 
   @override
