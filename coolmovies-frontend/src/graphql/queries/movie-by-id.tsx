@@ -18,7 +18,10 @@ export const movieById = gql`
                 movieId
                 title
                 rating
-                userReviewerId
+                userByUserReviewerId {
+                  id
+                  name
+                }   
             }
         }
     }

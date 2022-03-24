@@ -3,8 +3,15 @@ import type { NextPage } from 'next';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector, moviesActions } from '../../redux';
 import { useRouter } from 'next/router';
+import { theme } from '../../styles/theme';
+import { Card } from '@mui/material';
+import Image from 'next/image';
+import { Rings } from 'react-loader-spinner';
+import { getRating } from '../../utils/get-rating';
+import { FaStar, FaRegStar } from 'react-icons/fa';
+import { ReviewCard } from '../../components/ReviewCard';
+import { useTheme } from '@mui/styles';
 
-const primary = '#1976d2';
 
 const MovieDetail: NextPage = () => {
     const dispatch = useAppDispatch();
@@ -13,6 +20,7 @@ const MovieDetail: NextPage = () => {
     const reviews = movies.movieDetail?.reviews;
     const router = useRouter();
     const id = router.query.id as string | undefined;
+    const theme = useTheme();
 
     useEffect(() => {
         if (id) {
@@ -20,59 +28,170 @@ const MovieDetail: NextPage = () => {
         }
     }, [dispatch, id]);
 
-    return (
-        <div css={styles.root}>
-            {movie?.title ?? 'hola'}
-            {reviews?.map((review) => <div key={review.id}>{review.title}</div>)}
-            {console.log(reviews)}
-        </div >
+    return (movie ? <div css={styles.container}>
+        <Card css={styles.movieContainer}>
+            <Image src={movie.imgUrl} alt="poster"
+                width={175}
+                height={250} />
+            <div css={styles.movieInfoContainer}>
+                <div css={styles.movieInfo}>
+                    <div css={styles.movieTitle}>{movie?.title}</div>
+                    <div css={styles.movieDate}>{movie?.releaseDate.slice(0, 4)}</div>
+                </div>
+                <div css={styles.movieRatingContainer}>
+                    <div>Rating</div>
+                    <div css={styles.movieRating}><FaStar />{getRating(movie?.reviews)}</div>
+                    <div css={styles.totalReviews}>{`${movie?.reviews.length} reviews`}</div>
+                </div>
+            </div>
+        </Card>
+        <div css={styles.addRating}>
+            <FaRegStar /> Add a review
+        </div>
+        <div css={styles.movieReviews}>
+            {reviews?.map((review) => <ReviewCard key={review.id} review={review} />)}
+        </div>
+    </div>
+        : <div css={styles.containerEmpty}>
+            <Rings
+                height="100"
+                width="100"
+                color='#c7c7c7'
+                ariaLabel='loading'
+            />
+        </div>
     );
 };
 
 const styles = {
-    root: css({
+    container: css({
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: theme.colors.background,
+        padding: '20px'
+    }),
+    containerEmpty: css({
         height: '100vh',
         width: '100%',
         display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         flexDirection: 'column',
-        alignItems: 'center',
+        backgroundColor: theme.colors.background,
+        padding: '20px'
     }),
-    navBar: css({
-        background: primary,
-        height: 50,
-        alignSelf: 'stretch',
+    movieContainer: css({
         display: 'flex',
-        alignItems: 'center',
-        padding: 16,
-        borderRadius: 0,
-        p: {
-            color: 'white',
-        },
+        gap: '20px',
+        padding: '10px',
+        borderRadius: '10px',
+        backgroundColor: theme.colors.bubble,
+
     }),
-    body: css({
-        alignSelf: 'stretch',
-        padding: 32,
+    movieInfoContainer: css({
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        gap: '20px',
+        flex: 1,
+        justifyContent: 'space-between'
     }),
-    heading: css({ marginTop: 16, fontSize: '2.75rem', textAlign: 'center' }),
-    subtitle: css({
-        fontWeight: 300,
-        textAlign: 'center',
-        maxWidth: 600,
-        margin: '24px 0',
-        color: 'rgba(0, 0, 0, 0.6)',
-    }),
-    mainControls: css({
+    movieInfo: css({
         display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         alignItems: 'center',
-        button: { marginRight: 16 },
+        gap: '10px',
+        marginTop: '20px',
     }),
-    dataInput: css({
-        alignSelf: 'stretch',
-        margin: '32px 0',
+    movieTitle: css({
+        fontSize: '22px',
+        fontWeight: 'bold',
+        color: theme.colors.text,
     }),
+    movieDate: css({
+        fontSize: '14px',
+        fontWeight: 'bold',
+        backgroundColor: theme.colors.header,
+        color: 'white',
+        borderRadius: '10px',
+        width: '70px',
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '5px',
+        padding: '2px 0px',
+        marginTop: '10px',
+    }),
+    movieRatingContainer: css({
+        fontWeight: 'bold',
+        color: theme.colors.text,
+        backgroundColor: theme.colors.bubbleMedium,
+        borderRadius: '10px',
+        width: '100%',
+        height: '75px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '20px',
+        marginRight: '20px',
+
+    }),
+    movieRating: css({
+        marginTop: '10px',
+        fontSize: '18px',
+        fontWeight: 'bold',
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '5px',
+        color: '#f7ca18'
+    }),
+    totalReviews: css({
+        fontSize: '10px',
+        fontWeight: 'normal',
+        color: theme.colors.textDark
+    }),
+    addRating: css({
+        backgroundColor: theme.colors.header,
+        color: theme.colors.purple,
+        padding: '20px',
+        borderRadius: '10px',
+        fontWeight: 'bold',
+        fontSize: '16px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '10px',
+        margin: '20px 0px'
+    }),
+    movieReviews: css({
+        backgroundColor: theme.colors.header,
+        color: theme.colors.purple,
+        padding: '20px',
+        borderRadius: '10px',
+        fontWeight: 'bold',
+        fontSize: '16px',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        gap: '10px',
+        overflow: 'scroll',
+        '::-webkit-scrollbar': {
+            display: 'none',
+        }
+
+    }),
+
+
+
+
+    // ::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+
+
 };
 
 export default MovieDetail;

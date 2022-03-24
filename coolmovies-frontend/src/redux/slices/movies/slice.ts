@@ -13,15 +13,22 @@ interface Director {
     name: string;
 }
 
-interface MovieReview {
+interface Director {
+    name: string;
+}
+
+interface User {
+    id: string,
+    name: string,
+}
+export interface MovieReview {
     id: string;
     movieId: string;
     rating: number;
     title: string;
     body: string;
-    userId: string;
+    reviewer: User;
 }
-
 interface MovieState {
     movieDetail?: Movie;
     moviesList?: Movie[];
@@ -51,7 +58,6 @@ export const slice = createSlice({
         detailLoadError: (state) => {
             state.movieDetail = undefined;
         },
-
 
     },
 });
