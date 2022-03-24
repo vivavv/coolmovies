@@ -30,7 +30,7 @@ export const exampleAsyncEpic: Epic = (
         });
         return actions.loaded({ data: result.data });
       } catch (err) {
-        return actions.loadError();
+        return actions.moviesLoadError();
       }
     })
   );

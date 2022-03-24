@@ -11,11 +11,12 @@ const initialState: ExampleState = {
   sideEffectCount: 0,
 };
 
+
 export const slice = createSlice({
   initialState,
   name: 'example',
   reducers: {
-    fetch: () => {},
+    fetch: () => { },
     clearData: (state) => {
       state.fetchData = undefined;
     },

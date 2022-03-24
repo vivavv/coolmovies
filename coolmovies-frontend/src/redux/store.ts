@@ -1,10 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { exampleReducer, exampleEpics } from './slices';
+import { moviesReducer, movieEpics } from './slices';
+import {
+  Button,
+  Paper,
+  TextField,
+  Tooltip,
+  Typography,
+  Zoom,
+} from '@mui/material';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { CreateStoreOptions } from './types';
 
-const rootEpic = combineEpics(exampleEpics);
+const rootEpic = combineEpics(movieEpics);
 
 export const createStore = ({ epicDependencies }: CreateStoreOptions) => {
   const epicMiddleware = createEpicMiddleware({
@@ -15,7 +23,7 @@ export const createStore = ({ epicDependencies }: CreateStoreOptions) => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(epicMiddleware),
     reducer: {
-      example: exampleReducer,
+      movie: moviesReducer,
     },
   });
 
