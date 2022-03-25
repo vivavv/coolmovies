@@ -12,6 +12,8 @@ import {
 } from '@apollo/client';
 import { ThemeProvider } from '@mui/styles';
 import { theme } from '../styles/theme';
+import { Header } from '../components/Header';
+
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [store, setStore] = useState<EnhancedStore | null>(null);
@@ -25,6 +27,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     setStore(store);
   }, []);
   if (!store) return <>{'Loading...'}</>;
+
   return (
     <>
       <Head>
@@ -35,6 +38,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
       <ThemeProvider theme={theme}>
         <ReduxProvider store={store}>
+          <Header />
           <Component {...pageProps} />
         </ReduxProvider>
       </ThemeProvider>

@@ -4,6 +4,7 @@ import { filter, switchMap } from 'rxjs/operators';
 import { createMovieReview } from '../../../graphql/mutations/create-review';
 import { allMovies } from '../../../graphql/queries/all-movies';
 import { movieById } from '../../../graphql/queries/movie-by-id';
+import { getCurrentUser } from '../../../graphql/queries/user';
 import { RootState } from '../../store';
 import { EpicDependencies } from '../../types';
 import { actions, SliceAction } from './slice';
@@ -92,7 +93,7 @@ export const getMovieDetailEpic: Epic = (
         })
     );
 
-export const addMovieReview: Epic = (
+export const addMovieReviewEpic: Epic = (
     action$: Observable<SliceAction['createReview']>,
     state$: StateObservable<RootState>,
     { client }: EpicDependencies
@@ -115,6 +116,26 @@ export const addMovieReview: Epic = (
             } catch (err) {
                 console.log(err);
                 return actions.createReviewError();
+            }
+        })
+    );
+
+export const fetchUserEpic: Epic = (
+    action$: Observable<SliceAction['fetchUser']>,
+    state$: StateObservable<RootState>,
+    { client }: EpicDependencies
+) =>
+    action$.pipe(
+        filter(actions.fetchUser.match),
+        switchMap(async () => {
+            try {
+                const result = await client.query({
+                    query: getCurrentUser,
+                });
+
+                return actions.userLoaded({ data: result.data.currentUser });
+            } catch (err) {
+                return actions.userLoadError();
             }
         })
     );

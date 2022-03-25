@@ -33,6 +33,7 @@ export interface MovieReview {
 interface MovieState {
     movieDetail?: Movie;
     moviesList?: Movie[];
+    user?: User;
     reviewError: string;
 }
 
@@ -65,6 +66,14 @@ export const slice = createSlice({
         createReviewError: (state) => {
             state.reviewError = 'Error';
         },
+        fetchUser: () => { },
+        userLoaded: (state, action: PayloadAction<{ data: User }>) => {
+            state.user = action.payload.data;
+        },
+        userLoadError: (state) => {
+            state.user = { name: 'User', id: '' } as User;
+        },
+
 
 
 

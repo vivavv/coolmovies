@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector, moviesActions } from '../redux';
 import { theme } from '../styles/theme';
 import { MovieCard } from '../components/MovieCard';
+import { AppBar, Toolbar } from '@mui/material';
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -13,14 +14,15 @@ const Home: NextPage = () => {
     dispatch((moviesActions.fetch()));
   }, [dispatch]);
 
-  return (<div css={styles.container}>
-    <div css={styles.moviesContainer}>
-      {movies.moviesList?.map((movie) => {
-        return <MovieCard key={movie.id} movie={movie} />
-      }
-      )}
+  return (
+    <div css={styles.container}>
+      <div css={styles.moviesContainer}>
+        {movies.moviesList?.map((movie) => {
+          return <MovieCard key={movie.id} movie={movie} />
+        }
+        )}
+      </div>
     </div>
-  </div >
   );
 };
 
