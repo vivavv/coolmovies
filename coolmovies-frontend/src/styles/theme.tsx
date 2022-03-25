@@ -15,6 +15,7 @@ declare module '@mui/material/styles' {
             item: string,
             purple: string,
             gold: string,
+            green: string,
         };
     }
     // allow configuration using `createTheme`
@@ -31,6 +32,7 @@ declare module '@mui/material/styles' {
             item?: string,
             purple?: string,
             gold?: string,
+            green?: string
         };
     }
 }
@@ -48,6 +50,7 @@ export const theme = createTheme({
         bubbleDark: "#0e0d13",
         item: "#45415e",
         purple: "#BEA9DF",
-        gold: "#f7ca18"
+        gold: "#f7ca18",
+        green: "#6FDBC0"
     }
 });

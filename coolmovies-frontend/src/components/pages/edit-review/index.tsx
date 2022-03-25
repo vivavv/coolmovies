@@ -24,19 +24,25 @@ export interface Review {
     userReviewerId: string,
 }
 
-export const Review = () => {
+export const ReviewEdit = () => {
     const dispatch = useAppDispatch();
     const movies = useAppSelector((state) => state.movie);
     const movie = movies.movieDetail;
     const router = useRouter();
     const id = router.query.id as string | undefined;
+    const reviewId = router.query.reviewId as string | undefined;
     const { handleSubmit, control, formState } = useForm<ReviewForm>();
 
+
     useEffect(() => {
-        if (id) {
-            dispatch((moviesActions.fetchDetail({ id })));
+        dispatch((moviesActions.fetchUser()));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (reviewId) {
+            dispatch((moviesActions.fetchReview({ id: reviewId })));
         }
-    }, [dispatch, id]);
+    }, [dispatch, reviewId]);
 
 
     const onSubmit = handleSubmit((data) => {
@@ -46,7 +52,7 @@ export const Review = () => {
                 body: data.comments,
                 rating: data.rating,
                 movieId: id!,
-                userReviewerId: movie!.reviews[movie!.reviews.length - 1].id
+                userReviewerId: movies.user!.id
             }
         })));
 

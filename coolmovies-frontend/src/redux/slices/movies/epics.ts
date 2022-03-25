@@ -4,6 +4,7 @@ import { filter, switchMap } from 'rxjs/operators';
 import { createMovieReview } from '../../../graphql/mutations/create-review';
 import { allMovies } from '../../../graphql/queries/all-movies';
 import { movieById } from '../../../graphql/queries/movie-by-id';
+import { movieReviewById } from '../../../graphql/queries/movie-review';
 import { getCurrentUser } from '../../../graphql/queries/user';
 import { RootState } from '../../store';
 import { EpicDependencies } from '../../types';
@@ -53,7 +54,7 @@ export const fetchMoviesEpic: Epic = (
         })
     );
 
-export const getMovieDetailEpic: Epic = (
+export const fetchMovieDetailEpic: Epic = (
     action$: Observable<SliceAction['fetchDetail']>,
     state$: StateObservable<RootState>,
     { client }: EpicDependencies
@@ -137,3 +138,37 @@ export const fetchUserEpic: Epic = (
             }
         })
     );
+
+export const fetchReviewEpic: Epic = (
+    action$: Observable<SliceAction['fetchReview']>,
+    state$: StateObservable<RootState>,
+    { client }: EpicDependencies
+) =>
+    action$.pipe(
+        filter(actions.fetchReview.match),
+        switchMap(async (action) => {
+            try {
+                const result = await client.query({
+                    query: movieReviewById,
+                    variables: { id: action.payload.id }
+                });
+
+                const review = result.data.movieReviewById;
+
+                return actions.reviewLoaded({
+                    data: {
+                        movieId: review.movieByMovieId.id,
+                        movieTitle: review.movieByMovieId.title,
+                        rating: review.rating,
+                        title: review.title,
+                        body: review.body,
+                        userReviewerId: review.userReviewerId
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+                return actions.reviewLoadError();
+            }
+        })
+    );
+

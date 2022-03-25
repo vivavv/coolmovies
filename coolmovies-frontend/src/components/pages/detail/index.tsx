@@ -26,6 +26,13 @@ export const Detail = () => {
         }
     }, [dispatch, id]);
 
+    useEffect(() => {
+        dispatch((moviesActions.fetchUser()));
+    }, [dispatch]);
+
+    const hasAReview = () => {
+        return (movie?.reviews.some((review) => review.reviewer.id === movies.user!.id));
+    }
 
     return (movie ? <div css={styles.container}>
         <Card css={styles.movieContainer}>
@@ -45,13 +52,13 @@ export const Detail = () => {
                 </div>
             </div>
         </Card>
-        <PageLink route={`/movie/${id}/review`}>
+        {(!hasAReview()) && <PageLink route={`/movie/${id}/review`}>
             <div css={styles.addRating}>
                 <FaRegStar /> Add a review
             </div>
-        </PageLink>
+        </PageLink>}
         <div css={styles.movieReviews}>
-            {reviews?.map((review) => <ReviewCard key={review.id} review={review} />)}
+            {reviews?.map((review) => <ReviewCard key={review.id} review={review} hasReview={hasAReview()} userId={movies.user!.id} />)}
         </div>
     </div>
         : <div css={styles.containerEmpty}>

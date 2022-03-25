@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Review } from '../../../pages/movie/[id]/review';
-
+import { Review } from '../../../components/pages/review';
 export interface Movie {
     id: string;
     imgUrl: string;
@@ -34,6 +33,7 @@ interface MovieState {
     movieDetail?: Movie;
     moviesList?: Movie[];
     user?: User;
+    review?: Review;
     reviewError: string;
 }
 
@@ -73,6 +73,15 @@ export const slice = createSlice({
         userLoadError: (state) => {
             state.user = { name: 'User', id: '' } as User;
         },
+        fetchReview: (state, action: PayloadAction<{ id: string }>) => { },
+        reviewLoaded: (state, action: PayloadAction<{ data: Review }>) => {
+            console.log(action.payload.data);
+            state.review = action.payload.data;
+        },
+        reviewLoadError: (state) => {
+            state.review = {} as Review;
+        },
+
 
 
 
