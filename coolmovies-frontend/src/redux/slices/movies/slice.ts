@@ -47,7 +47,6 @@ export const slice = createSlice({
         },
         fetchReview: (state, action: PayloadAction<{ id: string }>) => { },
         reviewLoaded: (state, action: PayloadAction<{ data: Review }>) => {
-            console.log(action.payload.data);
             state.review = action.payload.data;
         },
         reviewLoadError: (state) => {

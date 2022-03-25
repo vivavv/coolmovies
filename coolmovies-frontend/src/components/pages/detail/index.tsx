@@ -65,7 +65,7 @@ export const Detail = () => {
             <Rings
                 height="100"
                 width="100"
-                color='#c7c7c7'
+                color='#BEA9DF'
                 ariaLabel='loading'
             />
         </div>

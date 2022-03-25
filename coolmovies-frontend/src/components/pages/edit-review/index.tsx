@@ -9,6 +9,13 @@ import { Button, Card, TextField } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
 import { PageLink } from '../../page-link';
 import { ReviewForm } from '../../../helpers/interfaces';
+import { Rings } from 'react-loader-spinner';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object().shape({
+    comments: yup.string().min(1).max(300).required(),
+});
 
 export const ReviewEdit = () => {
     const dispatch = useAppDispatch();
@@ -17,7 +24,9 @@ export const ReviewEdit = () => {
     const router = useRouter();
     const id = router.query.id as string | undefined;
     const reviewId = router.query.reviewId as string | undefined;
-    const { handleSubmit, control, formState } = useForm<ReviewForm>();
+    const { handleSubmit, control, formState } = useForm<ReviewForm>({
+        resolver: yupResolver(schema),
+    });
 
 
     useEffect(() => {
@@ -44,115 +53,125 @@ export const ReviewEdit = () => {
 
     });
 
-    return (<form onSubmit={onSubmit}><div css={styles.container}><Card css={styles.form}>
-        <div css={styles.formTitle}>Add Review</div>
-        <div css={styles.formBody}>
-            <div>
-                <div css={styles.movieDetail}>
-                    <PageLink route={`/movie/${id}`}>
-                        <div css={styles.movieLink}><BiArrowBack /></div>
-                    </PageLink>
-                    <div css={styles.movieTitle}>{movie?.title}</div>
-                </div>
-                <div css={styles.formItem}>
-                    <div css={styles.favorite}>
-                        <FaStar />
-                        <div css={styles.label}> Rating</div>
+    return (movies.review ?
+        <form onSubmit={onSubmit}><div css={styles.container}><Card css={styles.form}>
+            <div css={styles.formTitle}>Edit Review</div>
+            <div css={styles.formBody}>
+                <div>
+                    <div css={styles.movieDetail}>
+                        <PageLink route={`/movie/${id}`}>
+                            <div css={styles.movieLink}><BiArrowBack /></div>
+                        </PageLink>
+                        <div css={styles.movieTitle}>{movies.review.movieTitle}</div>
                     </div>
-                    <Controller
-                        name="rating"
-                        control={control}
-                        defaultValue={10}
-                        render={({ field: { onChange, value } }) => (
-                            <TextField variant='standard'
-                                maxRows={1}
-                                sx={{
-                                    input: { color: theme.colors.text, backgroundColor: theme.colors.background },
-                                    '& .MuiInput-underline:before': { borderBottomColor: theme.colors.header, borderBottomWidth: '2px', },
-                                    '& .MuiInput-underline:after': { borderBottomColor: theme.colors.purple },
-                                    '&:focus': { backgroundColor: 'red' }
-                                }}
-                                type="number"
-                                inputProps={{ min: 1, max: 10, pattern: "/^(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$/" }}
-                                style={{ width: '100px', marginBottom: '30px' }}
-                                onChange={onChange}
-                                value={value}
-                            />
-                        )}
-                    />
                     <div css={styles.formItem}>
-                        <div css={styles.label}>Title</div>
+                        <div css={styles.favorite}>
+                            <FaStar />
+                            <div css={styles.label}> Rating</div>
+                        </div>
                         <Controller
-                            name="title"
+                            name="rating"
                             control={control}
-                            defaultValue=""
+                            defaultValue={movies.review.rating}
                             render={({ field: { onChange, value } }) => (
                                 <TextField variant='standard'
                                     maxRows={1}
                                     sx={{
-                                        input: { color: theme.colors.text },
-                                        '& .MuiInput-underline:before': { borderBottomColor: theme.colors.header, borderBottomWidth: '2px' },
-                                        '& .MuiInput-underline:after': { borderBottomColor: theme.colors.purple },
+                                        input: { color: theme.colors.text, backgroundColor: theme.colors.background },
+                                        '& .MuiInput-underline:before': { borderBottomColor: theme.colors.header, borderBottomWidth: '2px', },
+                                        '& .MuiInput-underline:after': { borderBottom: 'none' },
                                     }}
-                                    inputProps={{ maxLength: 30 }}
-                                    style={{ marginBottom: '30px' }}
+                                    type="number"
+                                    inputProps={{ min: 1, max: 10, pattern: "/^(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$/", readOnly: true }}
+                                    style={{ width: '150px', marginBottom: '30px' }}
                                     onChange={onChange}
                                     value={value}
                                 />
                             )}
+                        />
+                        <div css={styles.formItem}>
+                            <div css={styles.label}>Title</div>
+                            <Controller
+                                name="title"
+                                control={control}
+                                defaultValue={movies.review.title}
+                                render={({ field: { onChange, value } }) => (
+                                    <TextField variant='standard'
 
+                                        maxRows={1}
+                                        sx={{
+                                            input: { color: theme.colors.text },
+                                            '& .MuiInput-underline:before': { borderBottomColor: theme.colors.header, borderBottomWidth: '2px' },
+                                            '& .MuiInput-underline:after': { borderBottom: 'none' },
+                                        }}
+                                        inputProps={{ maxLength: 30, readOnly: true }}
+                                        style={{ marginBottom: '30px' }}
+                                        onChange={onChange}
+                                        value={value}
+                                    />
+                                )}
+
+                            />
+                        </div>
+
+                    </div>
+                    <div css={styles.formItem}>
+                        <div css={styles.label}>Comments</div>
+                        <Controller
+                            name="comments"
+                            control={control}
+                            defaultValue={movies.review.body}
+                            render={({ field: { onChange, value } }) => (
+                                <TextField variant='standard'
+                                    rows={4}
+                                    multiline
+                                    sx={{
+                                        textarea: { color: theme.colors.text, overflow: 'hidden' },
+                                        '& .MuiInput-underline:before': { borderBottomColor: theme.colors.header, borderBottomWidth: '2px' },
+                                        '& .MuiInput-underline:after': { borderBottomColor: theme.colors.purple },
+                                    }}
+                                    style={{ marginBottom: '30px' }}
+                                    inputProps={{ maxLength: 300 }}
+                                    onChange={onChange}
+                                    value={value}
+                                />
+                            )}
                         />
                     </div>
+                </div>
+                {
+                    formState.isDirty
+                        ?
+                        <Button variant="contained"
+                            type="submit"
+                            style={{
+                                backgroundColor: theme.colors.purple,
+                                color: theme.colors.bubbleDark,
+                            }}
+                        >Edit review</Button>
+                        :
+                        <Button variant="contained"
+                            type="submit"
+                            disabled
+                            style={{
+                                backgroundColor: theme.colors.purple,
+                                color: theme.colors.bubbleDark,
+                                opacity: 0.4,
 
-                </div>
-                <div css={styles.formItem}>
-                    <div css={styles.label}>Comments</div>
-                    <Controller
-                        name="comments"
-                        control={control}
-                        defaultValue=""
-                        render={({ field: { onChange, value } }) => (
-                            <TextField variant='standard'
-                                rows={3}
-                                multiline
-                                sx={{
-                                    textarea: { color: theme.colors.text, overflow: 'hidden' },
-                                    '& .MuiInput-underline:before': { borderBottomColor: theme.colors.header, borderBottomWidth: '2px' },
-                                    '& .MuiInput-underline:after': { borderBottomColor: theme.colors.purple },
-                                }}
-                                inputProps={{ maxLength: 300 }}
-                                onChange={onChange}
-                                value={value}
-                            />
-                        )}
-                    />
-                </div>
+                            }}
+                        >Edit review</Button>
+                }
             </div>
-            {
-                formState.isDirty
-                    ?
-                    <Button variant="contained"
-                        type="submit"
-                        style={{
-                            backgroundColor: theme.colors.purple,
-                            color: theme.colors.bubbleDark,
-                        }}
-                    >Add review</Button>
-                    :
-                    <Button variant="contained"
-                        type="submit"
-                        disabled
-                        style={{
-                            backgroundColor: theme.colors.purple,
-                            color: theme.colors.bubbleDark,
-                            opacity: 0.4,
-
-                        }}
-                    >Add review</Button>
-            }
+        </Card ></div >
+        </form >
+        : <div css={styles.containerEmpty}>
+            <Rings
+                height="100"
+                width="100"
+                color='#BEA9DF'
+                ariaLabel='loading'
+            />
         </div>
-    </Card ></div >
-    </form >
     );
 }
 
@@ -162,6 +181,16 @@ const styles = {
         minHeight: '100vh',
         display: 'flex',
         flex: 1,
+        flexDirection: 'column',
+        backgroundColor: theme.colors.background,
+        padding: '20px'
+    }),
+    containerEmpty: css({
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         flexDirection: 'column',
         backgroundColor: theme.colors.background,
         padding: '20px'

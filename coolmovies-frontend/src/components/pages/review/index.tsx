@@ -9,7 +9,14 @@ import { Button, Card, TextField } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
 import { PageLink } from '../../page-link';
 import { ReviewForm } from '../../../helpers/interfaces';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
+const schema = yup.object().shape({
+    rating: yup.number().min(1).max(3).required(),
+    title: yup.string().min(1).max(30).required(),
+    comments: yup.string().min(1).max(300).required(),
+});
 
 export const Review = () => {
     const dispatch = useAppDispatch();
@@ -17,7 +24,9 @@ export const Review = () => {
     const movie = movies.movieDetail;
     const router = useRouter();
     const id = router.query.id as string | undefined;
-    const { handleSubmit, control, formState } = useForm<ReviewForm>();
+    const { handleSubmit, control, formState } = useForm<ReviewForm>({
+        resolver: yupResolver(schema),
+    });
 
     useEffect(() => {
         if (id) {
@@ -58,7 +67,7 @@ export const Review = () => {
                         name="rating"
                         control={control}
                         defaultValue={10}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <TextField variant='standard'
                                 maxRows={1}
                                 sx={{
@@ -68,10 +77,12 @@ export const Review = () => {
                                     '&:focus': { backgroundColor: 'red' }
                                 }}
                                 type="number"
-                                inputProps={{ min: 1, max: 10, pattern: "/^(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$/" }}
-                                style={{ width: '100px', marginBottom: '30px' }}
+                                inputProps={{ min: 1, max: 10 }}
+                                style={{ width: '150px', marginBottom: '30px' }}
                                 onChange={onChange}
                                 value={value}
+                                error={!!error}
+                                helperText={error ? error.message : null}
                             />
                         )}
                     />
@@ -81,7 +92,7 @@ export const Review = () => {
                             name="title"
                             control={control}
                             defaultValue=""
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value }, fieldState: { error } }) => (
                                 <TextField variant='standard'
                                     maxRows={1}
                                     sx={{
@@ -93,6 +104,8 @@ export const Review = () => {
                                     style={{ marginBottom: '30px' }}
                                     onChange={onChange}
                                     value={value}
+                                    error={!!error}
+                                    helperText={error ? error.message : null}
                                 />
                             )}
 
@@ -106,7 +119,7 @@ export const Review = () => {
                         name="comments"
                         control={control}
                         defaultValue=""
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange, value }, fieldState: { error } }) => (
                             <TextField variant='standard'
                                 rows={3}
                                 multiline
@@ -115,36 +128,24 @@ export const Review = () => {
                                     '& .MuiInput-underline:before': { borderBottomColor: theme.colors.header, borderBottomWidth: '2px' },
                                     '& .MuiInput-underline:after': { borderBottomColor: theme.colors.purple },
                                 }}
+                                style={{ marginBottom: '30px' }}
                                 inputProps={{ maxLength: 300 }}
                                 onChange={onChange}
                                 value={value}
+                                error={!!error}
+                                helperText={error ? error.message : null}
                             />
                         )}
                     />
                 </div>
             </div>
-            {
-                formState.isDirty
-                    ?
-                    <Button variant="contained"
-                        type="submit"
-                        style={{
-                            backgroundColor: theme.colors.purple,
-                            color: theme.colors.bubbleDark,
-                        }}
-                    >Add review</Button>
-                    :
-                    <Button variant="contained"
-                        type="submit"
-                        disabled
-                        style={{
-                            backgroundColor: theme.colors.purple,
-                            color: theme.colors.bubbleDark,
-                            opacity: 0.4,
-
-                        }}
-                    >Add review</Button>
-            }
+            <Button variant="contained"
+                type="submit"
+                style={{
+                    backgroundColor: theme.colors.purple,
+                    color: theme.colors.bubbleDark,
+                }}
+            >Add review</Button>
         </div>
     </Card ></div >
     </form >
