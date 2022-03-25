@@ -84,3 +84,43 @@ class MovieDirector {
 
   Map<String, dynamic> toJson() => {"name": name};
 }
+
+class Review {
+  Review({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.rating,
+    required this.userReviewerId,
+    required this.movieId,
+    required this.movieTitle,
+  });
+
+  String id;
+  String title;
+  String body;
+  int rating;
+  String userReviewerId;
+  String movieId;
+  String movieTitle;
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+        id: json["id"],
+        title: json["title"],
+        body: json["body"],
+        rating: json["rating"],
+        userReviewerId: json["userReviewerId"],
+        movieId: json["movieByMovieId"]["id"],
+        movieTitle: json["movieByMovieId"]["title"] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "body": body,
+        "rating": rating,
+        userReviewerId: userReviewerId,
+        movieId: movieId,
+        movieTitle: movieTitle
+      };
+}

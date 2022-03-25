@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class MovieReviews extends StatelessWidget {
   final Movie movie;
   final Size size;
+  final bool hasReview;
 
   const MovieReviews({
     Key? key,
     required this.movie,
     required this.size,
+    required this.hasReview,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class MovieReviews extends StatelessWidget {
                     itemBuilder: (context, i) => MovieReviewItem(
                           key: Key(movie.reviews![i].id),
                           review: movie.reviews![i],
+                          hasReview: hasReview,
                           size: size,
                         ),
                     separatorBuilder: (_, i) => const Divider(),

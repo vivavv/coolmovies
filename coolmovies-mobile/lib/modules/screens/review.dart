@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 
-class Review extends StatefulWidget {
-  const Review({Key? key}) : super(key: key);
+class ReviewPage extends StatefulWidget {
+  const ReviewPage({Key? key}) : super(key: key);
 
   @override
   _ReviewState createState() => _ReviewState();
 }
 
-class _ReviewState extends State<Review> {
+class _ReviewState extends State<ReviewPage> {
   MovieService? movieService;
   Movie? actualMovie;
   int rating = 0;
@@ -25,6 +25,7 @@ class _ReviewState extends State<Review> {
   final commentController = TextEditingController();
   final titleController = TextEditingController();
   User _currentUser = User(id: '', name: '');
+  Review? _currentReview;
 
   @override
   void initState() {
@@ -53,6 +54,24 @@ class _ReviewState extends State<Review> {
 
       setState(() {
         _currentUser = user;
+      });
+
+      _getCurrentReview();
+    }
+  }
+
+  void _getCurrentReview() async {
+    final actualReview = movieService!.selectedMovie!.reviews!
+        .where((review) => review.reviewer.id == _currentUser.id);
+
+    if (actualReview.isNotEmpty) {
+      final review = await movieService!.getReviewById(actualReview.first.id);
+
+      setState(() {
+        _currentReview = review;
+        ratingController.text = review!.rating.toString();
+        commentController.text = review.body;
+        titleController.text = review.title;
       });
     }
   }

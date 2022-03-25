@@ -32,6 +32,7 @@ class _MovieDetailState extends State<MovieDetail> {
     actualMovie = movieService!.selectedMovie;
 
     _getCurrentUser();
+    _getMovieDetail();
   }
 
   //Queries
@@ -52,6 +53,20 @@ class _MovieDetailState extends State<MovieDetail> {
         _currentUser = user;
       });
     }
+  }
+
+  void _getMovieDetail() async {
+    final result =
+        await movieService!.getMovieById(movieService!.selectedMovie!.id);
+
+    setState(() {
+      actualMovie = result;
+    });
+  }
+
+  bool hasAReview() {
+    return (actualMovie!.reviews!
+        .any((review) => review.reviewer.id == _currentUser.id));
   }
 
   @override
@@ -89,18 +104,21 @@ class _MovieDetailState extends State<MovieDetail> {
               )),
           body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             MovieDetailInfo(movie: actualMovie!, size: size),
-            MovieReviews(movie: actualMovie!, size: size),
+            MovieReviews(
+                movie: actualMovie!, size: size, hasReview: hasAReview())
           ]),
           bottomNavigationBar: Footer(username: _currentUser.name),
-          floatingActionButton: FloatingActionButton(
-            heroTag: actualMovie!.id,
-            onPressed: () {
-              Navigator.pushNamed(context, 'review',
-                  arguments: {'action': 'add'});
-            },
-            backgroundColor: getColor('bubble-dark'),
-            child: const Icon(Icons.add),
-          )),
+          floatingActionButton: !hasAReview()
+              ? FloatingActionButton(
+                  heroTag: actualMovie!.id,
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'review',
+                        arguments: {'action': 'add'});
+                  },
+                  backgroundColor: getColor('bubble-dark'),
+                  child: const Icon(Icons.add),
+                )
+              : null),
     );
   }
 
