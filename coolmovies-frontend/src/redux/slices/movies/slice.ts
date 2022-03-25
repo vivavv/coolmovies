@@ -1,34 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Review } from '../../../components/pages/review';
-export interface Movie {
-    id: string;
-    imgUrl: string;
-    title: string;
-    releaseDate: string;
-    director: Director;
-    reviews: MovieReview[];
-}
+import { Movie, Review, User } from '../../../helpers/interfaces';
 
-interface Director {
-    name: string;
-}
-
-interface Director {
-    name: string;
-}
-
-interface User {
-    id: string,
-    name: string,
-}
-export interface MovieReview {
-    id: string;
-    movieId: string;
-    rating: number;
-    title: string;
-    body: string;
-    reviewer: User;
-}
 interface MovieState {
     movieDetail?: Movie;
     moviesList?: Movie[];

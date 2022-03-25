@@ -8,21 +8,7 @@ import { useRouter } from 'next/router';
 import { Button, Card, TextField } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
 import { PageLink } from '../../PageLink';
-
-interface ReviewForm {
-    title: string,
-    rating: number,
-    comments: string,
-}
-
-export interface Review {
-    title: string,
-    body: string,
-    rating: number,
-    movieId: string,
-    movieTitle?: string,
-    userReviewerId: string,
-}
+import { ReviewForm } from '../../../helpers/interfaces';
 
 export const ReviewEdit = () => {
     const dispatch = useAppDispatch();
