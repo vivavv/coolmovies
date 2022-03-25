@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
-import type { NextPage } from 'next';
-import { useAppDispatch, useAppSelector, moviesActions } from '../../redux';
-import { theme } from '../../styles/theme';
-import { Button, Card, TextField } from '@mui/material';
+import { useAppDispatch, useAppSelector, moviesActions } from '../../../redux';
+import { theme } from '../../../styles/theme';
 import { FaStar } from 'react-icons/fa';
 import { useForm, Controller } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-
+import { Button, Card, TextField } from '@mui/material';
+import { BiArrowBack } from 'react-icons/bi';
+import { PageLink } from '../../PageLink';
 
 interface ReviewForm {
     title: string,
@@ -23,7 +23,7 @@ export interface Review {
     userReviewerId: string,
 }
 
-const AddReview: NextPage = () => {
+export const Review = () => {
     const dispatch = useAppDispatch();
     const movies = useAppSelector((state) => state.movie);
     const movie = movies.movieDetail;
@@ -55,7 +55,12 @@ const AddReview: NextPage = () => {
         <div css={styles.formTitle}>Add Review</div>
         <div css={styles.formBody}>
             <div>
-                <div css={styles.movieTitle}>{movie?.title}</div>
+                <div css={styles.movieDetail}>
+                    <PageLink route={`/movie/${id}`}>
+                        <div css={styles.movieLink}><BiArrowBack /></div>
+                    </PageLink>
+                    <div css={styles.movieTitle}>{movie?.title}</div>
+                </div>
                 <div css={styles.formItem}>
                     <div css={styles.favorite}>
                         <FaStar />
@@ -156,8 +161,7 @@ const AddReview: NextPage = () => {
     </Card ></div >
     </form >
     );
-};
-
+}
 
 const styles = {
     container: css({
@@ -196,6 +200,10 @@ const styles = {
         padding: '20px',
         backgroundColor: theme.colors.background,
     }),
+    movieDetail: css({
+        display: 'flex',
+        justifyContent: 'center',
+    }),
     movieTitle: css({
         fontSize: '20px',
         fontWeight: 'bold',
@@ -203,6 +211,23 @@ const styles = {
         padding: '5px 10px',
         textAlign: 'center',
         marginBottom: '30px'
+    }),
+    movieLink: css({
+        backgroundColor: theme.colors.purple,
+        borderRadius: '10px',
+        height: '20px',
+        padding: '2px',
+        marginTop: '6px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        transition: 'all ease 0.5s',
+
+        ':hover': {
+            cursor: 'pointer',
+            backgroundColor: '#784cbc',
+        }
+
     }),
     formItem: css({
         display: 'flex',
@@ -221,5 +246,3 @@ const styles = {
     })
 
 };
-
-export default AddReview;

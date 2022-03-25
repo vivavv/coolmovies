@@ -1,19 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import { css } from '@emotion/react';
-import type { NextPage } from 'next';
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector, moviesActions } from '../../redux';
+import { useAppDispatch, useAppSelector, moviesActions } from '../../../redux';
 import { useRouter } from 'next/router';
-import { theme } from '../../styles/theme';
+import { theme } from '../../../styles/theme';
 import { Card } from '@mui/material';
-import Image from 'next/image';
 import { Rings } from 'react-loader-spinner';
-import { getRating } from '../../utils/get-rating';
+import { getRating } from '../../../utils/get-rating';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import { ReviewCard } from '../../components/ReviewCard';
-import { PageLink } from '../../components/PageLink';
+import { ReviewCard } from '../../../components/ReviewCard';
+import { PageLink } from '../../../components/PageLink';
 
-const MovieDetail: NextPage = () => {
+
+export const Detail = () => {
     const dispatch = useAppDispatch();
     const movies = useAppSelector((state) => state.movie);
     const movie = movies.movieDetail;
@@ -26,6 +25,7 @@ const MovieDetail: NextPage = () => {
             dispatch((moviesActions.fetchDetail({ id })));
         }
     }, [dispatch, id]);
+
 
     return (movie ? <div css={styles.container}>
         <Card css={styles.movieContainer}>
@@ -45,7 +45,7 @@ const MovieDetail: NextPage = () => {
                 </div>
             </div>
         </Card>
-        <PageLink route={`/add-review/${id}`}>
+        <PageLink route={`/movie/${id}/review`}>
             <div css={styles.addRating}>
                 <FaRegStar /> Add a review
             </div>
@@ -63,7 +63,7 @@ const MovieDetail: NextPage = () => {
             />
         </div>
     );
-};
+}
 
 const styles = {
     container: css({
@@ -202,5 +202,3 @@ const styles = {
     }),
 
 };
-
-export default MovieDetail;

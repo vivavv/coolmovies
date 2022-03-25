@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const MovieCard: FC<Props> = ({ movie }) => {
-    return <PageLink key={movie.id} route={`/movie-detail/${movie.id}`}>
+    return <PageLink key={movie.id} route={`/movie/${movie.id}`}>
         <Card css={styles.movieCard}>
             <img src={movie.imgUrl} alt="poster"
                 css={styles.moviePoster}

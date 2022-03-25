@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Review } from '../../../pages/add-review/[id]';
+import { Review } from '../../../pages/movie/[id]/review';
 
 export interface Movie {
     id: string;

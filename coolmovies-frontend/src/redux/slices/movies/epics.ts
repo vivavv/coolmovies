@@ -8,6 +8,7 @@ import { getCurrentUser } from '../../../graphql/queries/user';
 import { RootState } from '../../store';
 import { EpicDependencies } from '../../types';
 import { actions, SliceAction } from './slice';
+import Router from 'next/router';
 
 
 export const fetchMoviesEpic: Epic = (
@@ -108,11 +109,8 @@ export const addMovieReviewEpic: Epic = (
                         input: { movieReview: action.payload.review }
                     }
                 });
-
-                console.log('result', result);
-
-                return action;
-
+                console.log(result);
+                Router.push(`/movie/${action.payload.review.movieId}`);
             } catch (err) {
                 console.log(err);
                 return actions.createReviewError();
