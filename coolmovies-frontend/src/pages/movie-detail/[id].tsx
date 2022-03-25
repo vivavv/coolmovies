@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { css } from '@emotion/react';
 import type { NextPage } from 'next';
 import { useEffect } from 'react';
@@ -10,8 +11,7 @@ import { Rings } from 'react-loader-spinner';
 import { getRating } from '../../utils/get-rating';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { ReviewCard } from '../../components/ReviewCard';
-import { useTheme } from '@mui/styles';
-
+import { PageLink } from '../../components/PageLink';
 
 const MovieDetail: NextPage = () => {
     const dispatch = useAppDispatch();
@@ -20,7 +20,6 @@ const MovieDetail: NextPage = () => {
     const reviews = movies.movieDetail?.reviews;
     const router = useRouter();
     const id = router.query.id as string | undefined;
-    const theme = useTheme();
 
     useEffect(() => {
         if (id) {
@@ -30,9 +29,8 @@ const MovieDetail: NextPage = () => {
 
     return (movie ? <div css={styles.container}>
         <Card css={styles.movieContainer}>
-            <Image src={movie.imgUrl} alt="poster"
-                width={175}
-                height={250} />
+            <img src={movie.imgUrl} alt="poster"
+            />
             <div css={styles.movieInfoContainer}>
                 <div css={styles.movieInfo}>
                     <div css={styles.movieTitle}>{movie?.title}</div>
@@ -45,9 +43,11 @@ const MovieDetail: NextPage = () => {
                 </div>
             </div>
         </Card>
-        <div css={styles.addRating}>
-            <FaRegStar /> Add a review
-        </div>
+        <PageLink route={`/add-review/${id}`}>
+            <div css={styles.addRating}>
+                <FaRegStar /> Add a review
+            </div>
+        </PageLink>
         <div css={styles.movieReviews}>
             {reviews?.map((review) => <ReviewCard key={review.id} review={review} />)}
         </div>
@@ -145,7 +145,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         gap: '5px',
-        color: '#f7ca18'
+        color: theme.colors.gold
     }),
     totalReviews: css({
         fontSize: '10px',
@@ -163,7 +163,14 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         gap: '10px',
-        margin: '20px 0px'
+        margin: '20px 0px',
+        transition: 'all ease 0.5s',
+
+        ':hover': {
+            backgroundColor: '#0e0d13',
+            color: theme.colors.text,
+            cursor: 'pointer',
+        }
     }),
     movieReviews: css({
         backgroundColor: theme.colors.header,
@@ -182,15 +189,6 @@ const styles = {
         }
 
     }),
-
-
-
-
-    // ::-webkit-scrollbar {
-    //     display: none;
-    // }
-
-
 
 };
 

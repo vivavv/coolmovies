@@ -9,5 +9,5 @@ module.exports = {
     ];
   },
   reactStrictMode: true,
-  images: { domains: ['upload.wikimedia.org'] }
+  images: { domains: ['upload.wikimedia.org', 'images-na.ssl-images-amazon.com'] }
 };

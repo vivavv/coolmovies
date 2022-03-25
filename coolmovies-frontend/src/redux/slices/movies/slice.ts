@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Review } from '../../../pages/add-review/[id]';
 
-interface Movie {
+export interface Movie {
     id: string;
     imgUrl: string;
     title: string;
@@ -32,9 +33,11 @@ export interface MovieReview {
 interface MovieState {
     movieDetail?: Movie;
     moviesList?: Movie[];
+    reviewError: string;
 }
 
 const initialState: MovieState = {
+    reviewError: '',
 };
 
 export const slice = createSlice({
@@ -58,6 +61,12 @@ export const slice = createSlice({
         detailLoadError: (state) => {
             state.movieDetail = undefined;
         },
+        createReview: (state, action: PayloadAction<{ review: Review }>) => { },
+        createReviewError: (state) => {
+            state.reviewError = 'Error';
+        },
+
+
 
     },
 });

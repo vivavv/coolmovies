@@ -35,12 +35,11 @@ const styles = {
         fontWeight: 'bold',
         fontSize: '16px',
         color: theme.colors.text,
-
     }),
     reviewRating: css({
         display: 'flex',
         gap: '5px',
-        color: '#f7ca18'
+        color: theme.colors.gold
     }),
     reviewer: css({
         fontSize: '14px',
@@ -52,7 +51,6 @@ const styles = {
         fontWeight: 'normal',
         color: theme.colors.text,
         marginTop: '10px',
-
     })
 
 };

@@ -1,6 +1,7 @@
 import { Epic, StateObservable } from 'redux-observable';
 import { Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
+import { createMovieReview } from '../../../graphql/mutations/create-review';
 import { allMovies } from '../../../graphql/queries/all-movies';
 import { movieById } from '../../../graphql/queries/movie-by-id';
 import { RootState } from '../../store';
@@ -64,6 +65,33 @@ export const getMovieDetailEpic: Epic = (
                 });
             } catch (err) {
                 return actions.detailLoadError();
+            }
+        })
+    );
+
+export const addMovieReview: Epic = (
+    action$: Observable<SliceAction['createReview']>,
+    state$: StateObservable<RootState>,
+    { client }: EpicDependencies
+) =>
+    action$.pipe(
+        filter(actions.createReview.match),
+        switchMap(async (action) => {
+            try {
+                const result = await client.mutate({
+                    mutation: createMovieReview,
+                    variables: {
+                        input: { movieReview: action.payload.review }
+                    }
+                });
+
+                console.log('result', result);
+
+                return action;
+
+            } catch (err) {
+                console.log(err);
+                return actions.createReviewError();
             }
         })
     );
