@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Card, TextField } from '@mui/material';
 import { BiArrowBack } from 'react-icons/bi';
-import { PageLink } from '../../PageLink';
+import { PageLink } from '../../page-link';
 import { ReviewForm } from '../../../helpers/interfaces';
 
 

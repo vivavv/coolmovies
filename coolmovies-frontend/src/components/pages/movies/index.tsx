@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector, moviesActions } from '../../../redux';
 import { theme } from '../../../styles/theme';
-import { MovieCard } from '../../MovieCard';
+import { MovieCard } from '../../movie-card';
 
 export const Movies = () => {
     const dispatch = useAppDispatch();

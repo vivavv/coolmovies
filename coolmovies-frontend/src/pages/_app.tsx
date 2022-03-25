@@ -12,7 +12,7 @@ import {
 } from '@apollo/client';
 import { ThemeProvider } from '@mui/styles';
 import { theme } from '../styles/theme';
-import { Header } from '../components/Header';
+import { Header } from '../components/header';
 
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {

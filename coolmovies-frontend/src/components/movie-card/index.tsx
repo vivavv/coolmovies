@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { FC } from 'react';
-import { Movie } from '../../redux/slices/movies/slice';
 import { Card } from '@mui/material';
 import { css } from '@emotion/react';
 import { theme } from '../../styles/theme';
 import { getRating } from '../../utils/get-rating';
 import { FaStar } from 'react-icons/fa';
-import { PageLink } from '../PageLink';
+import { PageLink } from '../page-link';
+import { Movie } from '../../helpers/interfaces';
 
 interface Props {
     movie: Movie,

@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { theme } from '../../styles/theme';
 import MoviesIcon from '../../assets/icons/movies.svg';
 import { FaUserCircle } from 'react-icons/fa';
-import { PageLink } from '../PageLink';
+import { PageLink } from '../page-link';
 import { moviesActions, useAppDispatch, useAppSelector } from '../../redux';
 
 export const Header = () => {

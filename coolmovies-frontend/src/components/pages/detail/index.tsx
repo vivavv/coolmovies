@@ -8,8 +8,8 @@ import { Card } from '@mui/material';
 import { Rings } from 'react-loader-spinner';
 import { getRating } from '../../../utils/get-rating';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import { ReviewCard } from '../../../components/ReviewCard';
-import { PageLink } from '../../../components/PageLink';
+import { ReviewCard } from '../../review-card';
+import { PageLink } from '../../page-link';
 
 
 export const Detail = () => {

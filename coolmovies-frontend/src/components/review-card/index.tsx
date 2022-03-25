@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { MovieReview } from '../../redux/slices/movies/slice';
 import { Card } from '@mui/material';
 import { css } from '@emotion/react';
 import { theme } from '../../styles/theme';
 import { FaStar } from 'react-icons/fa';
 import EditIcon from '../../assets/icons/edit.svg';
-import { PageLink } from '../PageLink';
+import { PageLink } from '../page-link';
+import { MovieReview } from '../../helpers/interfaces';
 
 interface Props {
     review: MovieReview,
