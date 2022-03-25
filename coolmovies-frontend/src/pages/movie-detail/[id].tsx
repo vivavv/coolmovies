@@ -30,10 +30,12 @@ const MovieDetail: NextPage = () => {
     return (movie ? <div css={styles.container}>
         <Card css={styles.movieContainer}>
             <img src={movie.imgUrl} alt="poster"
+                css={styles.moviePoster}
             />
             <div css={styles.movieInfoContainer}>
                 <div css={styles.movieInfo}>
                     <div css={styles.movieTitle}>{movie?.title}</div>
+                    <div css={styles.movieDirector}>{movie?.director}</div>
                     <div css={styles.movieDate}>{movie?.releaseDate.slice(0, 4)}</div>
                 </div>
                 <div css={styles.movieRatingContainer}>
@@ -66,8 +68,9 @@ const MovieDetail: NextPage = () => {
 const styles = {
     container: css({
         width: '100%',
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
+        flex: 1,
         flexDirection: 'column',
         backgroundColor: theme.colors.background,
         padding: '20px'
@@ -97,6 +100,10 @@ const styles = {
         flex: 1,
         justifyContent: 'space-between'
     }),
+    moviePoster: css({
+        height: '250px',
+        width: '175px',
+    }),
     movieInfo: css({
         display: 'flex',
         flexDirection: 'column',
@@ -109,6 +116,10 @@ const styles = {
         fontSize: '22px',
         fontWeight: 'bold',
         color: theme.colors.text,
+    }),
+    movieDirector: css({
+        fontSize: '18px',
+        color: theme.colors.purple,
     }),
     movieDate: css({
         fontSize: '14px',

@@ -162,8 +162,9 @@ const AddReview: NextPage = () => {
 const styles = {
     container: css({
         width: '100%',
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
+        flex: 1,
         flexDirection: 'column',
         backgroundColor: theme.colors.background,
         padding: '20px'

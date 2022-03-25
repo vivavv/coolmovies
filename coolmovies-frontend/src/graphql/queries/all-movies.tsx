@@ -6,8 +6,6 @@ export const allMovies = gql`
       nodes {
         id
         imgUrl
-        movieDirectorId
-        userCreatorId
         title
         releaseDate
         nodeId
@@ -15,6 +13,15 @@ export const allMovies = gql`
           id
           name
           nodeId
+        }
+        movieDirectorByMovieDirectorId {
+          name
+          id
+        }
+        movieReviewsByMovieId {
+          nodes {
+            rating
+          }
         }
       }
     }

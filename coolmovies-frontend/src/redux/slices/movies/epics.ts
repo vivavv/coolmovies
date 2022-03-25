@@ -6,7 +6,7 @@ import { allMovies } from '../../../graphql/queries/all-movies';
 import { movieById } from '../../../graphql/queries/movie-by-id';
 import { RootState } from '../../store';
 import { EpicDependencies } from '../../types';
-import { actions, MovieReview, SliceAction } from './slice';
+import { actions, SliceAction } from './slice';
 
 
 export const fetchMoviesEpic: Epic = (
@@ -21,7 +21,30 @@ export const fetchMoviesEpic: Epic = (
                 const result = await client.query({
                     query: allMovies,
                 });
-                return actions.moviesLoaded({ data: result.data.allMovies.nodes });
+
+                const movies = result.data.allMovies.nodes;
+
+                return actions.moviesLoaded({
+                    data: (movies as any[]).map((movie) => {
+                        return {
+                            id: movie.id,
+                            imgUrl: movie.imgUrl,
+                            title: movie.title,
+                            releaseDate: movie.releaseDate,
+                            director: movie.movieDirectorByMovieDirectorId,
+                            reviews: (movie.movieReviewsByMovieId.nodes as any[]).map((node) => {
+                                return {
+                                    id: node.id,
+                                    movieId: node.movieId,
+                                    rating: node.rating,
+                                    title: node.title,
+                                    body: node.body,
+                                    reviewer: node.userByUserReviewerId
+                                }
+                            }),
+                        }
+                    })
+                });
             } catch (err) {
                 return actions.moviesLoadError();
             }
